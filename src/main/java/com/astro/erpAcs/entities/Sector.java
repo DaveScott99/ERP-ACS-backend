@@ -34,6 +34,9 @@ public class Sector {
 	@OneToMany(mappedBy = "sector", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Employee> employees = new HashSet<>();
 	
+	@OneToMany(mappedBy = "sector", fetch = FetchType.EAGER)
+	private Set<Task> tasks = new HashSet<>();
+	
 	@Deprecated
 	public Sector() {}
 	
@@ -64,6 +67,10 @@ public class Sector {
 
 	public Set<Employee> getEmployees() {
 		return employees;
+	}
+
+	public Set<Task> getTasks() {
+		return tasks;
 	}
 	
 }

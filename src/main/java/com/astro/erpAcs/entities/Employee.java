@@ -1,5 +1,7 @@
 package com.astro.erpAcs.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +32,7 @@ public class Employee {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_SECTOR", nullable = true)
+	@JsonIgnore
 	private Sector sector;
 	
 	@ManyToOne

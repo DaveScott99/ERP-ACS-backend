@@ -3,7 +3,7 @@ package com.astro.erpAcs.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +26,7 @@ public class Office {
 	private String officeName;
 
 	@OneToMany(mappedBy = "office")
-	@JsonIgnore
+	@JsonIgnoreProperties("office")
 	private Set<Employee> employees = new HashSet<>();
 
 	@Deprecated

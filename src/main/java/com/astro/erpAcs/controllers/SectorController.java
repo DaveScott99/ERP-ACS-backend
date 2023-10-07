@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.entities.Sector;
 import com.astro.erpAcs.services.SectorService;
 
@@ -43,6 +44,11 @@ public class SectorController {
 		Sector sectorToRegistry = sectorService.register(sector);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(sectorToRegistry.getId()).toUri();
 		return ResponseEntity.created(uri).body(sectorToRegistry);
+	}
+	
+	@PostMapping(value = "/{sectorId}/addEmployee")
+	public ResponseEntity<String> addEmployee(@PathVariable Long sectorId, @RequestBody Employee employee) {
+		return ResponseEntity.ok(sectorService.addEmployee(sectorId, employee));
 	}
 	
 	@PutMapping(value = "/{sectorId}")

@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.entities.Sector;
 import com.astro.erpAcs.repositories.SectorRepository;
 
@@ -34,6 +35,27 @@ public class SectorService {
 	@Transactional
 	public Sector register(Sector sector) {
 		return sectorRepository.save(sector);
+	}
+	
+	public String addEmployee(Long sectorId, Employee employee) {
+		
+		return sectorRepository.findById(sectorId)
+				.map(sectorFound -> {
+					if (sectorFound.getEmployees().contains(employee)) {
+						return "Funcionário já está cadastrado no setor";
+					}
+					
+					sectorFound.getEmployees().add(employee);
+					
+					employee.setSector(sectorFound);
+					
+					sectorRepository.save(sectorFound);
+					return "Funcionário cadastrado com sucesso";
+						
+			
+				})
+				.orElseThrow(() -> new EntityNotFoundException("Setor não encontrado"));
+		
 	}
 	
 	@Transactional

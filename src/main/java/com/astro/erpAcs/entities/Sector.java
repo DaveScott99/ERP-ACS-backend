@@ -3,6 +3,8 @@ package com.astro.erpAcs.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,9 +34,11 @@ public class Sector {
 	private Employee leader;
 	
 	@OneToMany(mappedBy = "sector", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Employee> employees = new HashSet<>();
 	
 	@OneToMany(mappedBy = "sector", fetch = FetchType.EAGER)
+	@JsonIgnore
 	private Set<Task> tasks = new HashSet<>();
 	
 	@Deprecated

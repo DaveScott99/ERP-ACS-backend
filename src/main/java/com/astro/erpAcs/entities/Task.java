@@ -6,8 +6,12 @@ import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.astro.erpAcs.entities.enums.StatusTask;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,7 +40,7 @@ public class Task {
 	private Integer priority;
 	
 	@Column(name = "STATUS_TASK")
-	private Integer status;
+	private Integer statusTask;
 	
 	@Column(name = "TYPE_TASK")
 	private String type;
@@ -45,24 +49,28 @@ public class Task {
 	@CreationTimestamp
 	private Instant creationDate;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "TASK_EMPLOYEE",
         joinColumns = @JoinColumn(name = "ID_TASK"),
         inverseJoinColumns = @JoinColumn(name = "ID_EMPLOYEE")
 	)
+	@JsonIgnore
 	private Set<Employee> employees = new HashSet<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_SECTOR", nullable = true)
 	private Sector sector;
+	
+	@Deprecated
+	public Task() {}
 
-	public Task(String title, String description, Integer priority, Integer status, String type,
+	public Task(String title, String description, Integer priority, StatusTask statusTask, String type,
 			Instant creationDate, Sector sector) {
 		this.title = title;
 		this.description = description;
 		this.priority = priority;
-		this.status = status;
+		setStatusTask(statusTask);
 		this.type = type;
 		this.creationDate = creationDate;
 		this.sector = sector;
@@ -92,12 +100,14 @@ public class Task {
 		this.priority = priority;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public StatusTask getStatusTask() {
+		return StatusTask.valueOf(statusTask);
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setStatusTask(StatusTask status) {
+		if (status != null) {
+			this.statusTask = status.getCode();
+		}
 	}
 
 	public String getType() {

@@ -14,45 +14,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.astro.erpAcs.entities.User;
-import com.astro.erpAcs.services.UserService;
+import com.astro.erpAcs.entities.Employee;
+import com.astro.erpAcs.services.EmployeeService;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/Employee")
+public class EmployeeController {
 
-	private final UserService userService;
+	private final EmployeeService EmployeeService;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
+	public EmployeeController(EmployeeService EmployeeService) {
+		this.EmployeeService = EmployeeService;
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAllPaged(){
-		List<User> users = userService.findUsers();
+	public ResponseEntity<List<Employee>> findAllPaged(){
+		List<Employee> users = EmployeeService.findAll();
 		return ResponseEntity.ok().body(users);
 	}
 	
 	@GetMapping(value = "/{userId}")
-	public ResponseEntity<User> findById(@PathVariable Long userId){
-		return ResponseEntity.ok().body(userService.findById(userId));
+	public ResponseEntity<Employee> findById(@PathVariable Long userId){
+		return ResponseEntity.ok().body(EmployeeService.findById(userId));
 	}
 	
 	@PostMapping
-	public ResponseEntity<User> register(@RequestBody User RegisterDTO) {
-		User user = userService.register(RegisterDTO);
+	public ResponseEntity<Employee> register(@RequestBody Employee RegisterDTO) {
+		Employee user = EmployeeService.register(RegisterDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).body(user);
 	}
 	
 	@PutMapping(value = "/{userId}")
-	public ResponseEntity<User> update(@PathVariable Long userId, @RequestBody User userUpdateDto){
-		return ResponseEntity.ok().body(userService.update(userId, userUpdateDto));
+	public ResponseEntity<Employee> update(@PathVariable Long userId, @RequestBody Employee userUpdateDto){
+		return ResponseEntity.ok().body(EmployeeService.update(userId, userUpdateDto));
 	}
 	
 	@DeleteMapping(value = "/{userId}")
 	public ResponseEntity<Void> deletePost(@PathVariable Long userId) {
-		userService.delete(userId);
+		EmployeeService.delete(userId);
 		return ResponseEntity.noContent().build();
 	}
 }

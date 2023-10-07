@@ -9,12 +9,12 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "PERSON")
-public class User {
+@Table(name = "EMPLOYEE")
+public class Employee {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_USER")
+	@Column(name = "ID_EMPLOYEE")
 	private Long id;
 	
 	@Column(name = "FIRST_NAME")
@@ -26,10 +26,10 @@ public class User {
 	@OneToOne(mappedBy = "leader")
 	private Sector leaderSector;
 		
-	public User() {
+	public Employee() {
 	}
 
-	public User(Long id, String firstName, String lastName) {
+	public Employee(Long id, String firstName, String lastName) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;

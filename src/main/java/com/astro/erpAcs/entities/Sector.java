@@ -22,13 +22,13 @@ public class Sector {
 	private String nameSector;
 	
 	@OneToOne
-	@JoinColumn(name = "ID_LEADER", referencedColumnName = "ID_USER")
-	private User leader;
+	@JoinColumn(name = "ID_LEADER", referencedColumnName = "ID_EMPLOYEE")
+	private Employee leader;
 	
 	public Sector() {
 	}
 	
-	public Sector(Long id, String nameSector, User leader) {
+	public Sector(Long id, String nameSector, Employee leader) {
 		this.id = id;
 		this.nameSector = nameSector;
 		this.leader = leader;
@@ -50,11 +50,11 @@ public class Sector {
 		this.nameSector = nameSector;
 	}
 
-	public User getLeader() {
+	public Employee getLeader() {
 		return leader;
 	}
 
-	public void setLeader(User leader) {
+	public void setLeader(Employee leader) {
 		this.leader = leader;
 	}
 	

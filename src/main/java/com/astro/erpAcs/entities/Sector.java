@@ -18,28 +18,23 @@ public class Sector {
 	@Column(name = "ID_SECTOR")
 	private Long id;
 	
-	@Column(name = "NAME_SECTOR")
+	@Column(name = "NAME_SECTOR", nullable = false)
 	private String nameSector;
 	
 	@OneToOne
 	@JoinColumn(name = "ID_LEADER", referencedColumnName = "ID_EMPLOYEE")
 	private Employee leader;
 	
-	public Sector() {
-	}
+	@Deprecated
+	public Sector() {}
 	
-	public Sector(Long id, String nameSector, Employee leader) {
-		this.id = id;
+	public Sector(String nameSector, Employee leader) {
 		this.nameSector = nameSector;
 		this.leader = leader;
 	}
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getNameSector() {

@@ -18,7 +18,7 @@ import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.services.EmployeeService;
 
 @RestController
-@RequestMapping("/Employee")
+@RequestMapping("/employees")
 public class EmployeeController {
 
 	private final EmployeeService EmployeeService;
@@ -33,9 +33,9 @@ public class EmployeeController {
 		return ResponseEntity.ok().body(users);
 	}
 	
-	@GetMapping(value = "/{userId}")
-	public ResponseEntity<Employee> findById(@PathVariable Long userId){
-		return ResponseEntity.ok().body(EmployeeService.findById(userId));
+	@GetMapping(value = "/{employeeId}")
+	public ResponseEntity<Employee> findById(@PathVariable Long employeeId){
+		return ResponseEntity.ok().body(EmployeeService.findById(employeeId));
 	}
 	
 	@PostMapping
@@ -45,14 +45,14 @@ public class EmployeeController {
 		return ResponseEntity.created(uri).body(user);
 	}
 	
-	@PutMapping(value = "/{userId}")
-	public ResponseEntity<Employee> update(@PathVariable Long userId, @RequestBody Employee userUpdateDto){
-		return ResponseEntity.ok().body(EmployeeService.update(userId, userUpdateDto));
+	@PutMapping(value = "/{employeeId}")
+	public ResponseEntity<Employee> update(@PathVariable Long employeeId, @RequestBody Employee userUpdateDto){
+		return ResponseEntity.ok().body(EmployeeService.update(employeeId, userUpdateDto));
 	}
 	
-	@DeleteMapping(value = "/{userId}")
-	public ResponseEntity<Void> deletePost(@PathVariable Long userId) {
-		EmployeeService.delete(userId);
+	@DeleteMapping(value = "/{employeeId}")
+	public ResponseEntity<Void> deletePost(@PathVariable Long employeeId) {
+		EmployeeService.delete(employeeId);
 		return ResponseEntity.noContent().build();
 	}
 }

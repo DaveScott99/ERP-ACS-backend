@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -25,22 +27,22 @@ public class Employee {
 	
 	@OneToOne(mappedBy = "leader")
 	private Sector leaderSector;
-		
-	public Employee() {
-	}
+	
+	@ManyToOne
+	@JoinColumn(name = "ID_OFFICE", nullable = true)
+	private Office office;
+	
+	@Deprecated
+	public Employee() {}
 
-	public Employee(Long id, String firstName, String lastName) {
-		this.id = id;
+	public Employee(String firstName, String lastName, Office office) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.office = office;
 	}
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -57,6 +59,14 @@ public class Employee {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public Office getOffice() {
+		return office;
+	}
+
+	public void setOffice(Office office) {
+		this.office = office;
 	}
 	
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -22,6 +23,7 @@ public class Task {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID_TASK")
 	private Long id;
 	
 	@Column(name = "TITLE_TASK", nullable = false)
@@ -44,6 +46,11 @@ public class Task {
 	private Instant creationDate;
 	
 	@ManyToMany
+	@JoinTable(
+		name = "TASK_EMPLOYEE",
+        joinColumns = @JoinColumn(name = "ID_TASK"),
+        inverseJoinColumns = @JoinColumn(name = "ID_EMPLOYEE")
+	)
 	private Set<Employee> employees = new HashSet<>();
 	
 	@ManyToOne

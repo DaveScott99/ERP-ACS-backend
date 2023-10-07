@@ -29,12 +29,23 @@ public class Employee {
 	private Sector leaderSector;
 	
 	@ManyToOne
+	@JoinColumn(name = "ID_SECTOR", nullable = true)
+	private Sector sector;
+	
+	@ManyToOne
 	@JoinColumn(name = "ID_OFFICE", nullable = true)
 	private Office office;
 	
 	@Deprecated
 	public Employee() {}
 
+	public Employee(String firstName, String lastName, Office office, Sector sector) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.office = office;
+		this.sector = sector;
+	}
+	
 	public Employee(String firstName, String lastName, Office office) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -68,5 +79,13 @@ public class Employee {
 	public void setOffice(Office office) {
 		this.office = office;
 	}
-	
+
+	public Sector getSector() {
+		return sector;
+	}
+
+	public void setSector(Sector sector) {
+		this.sector = sector;
+	}
+
 }

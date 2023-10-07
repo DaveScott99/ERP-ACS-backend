@@ -1,11 +1,17 @@
 package com.astro.erpAcs.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -24,6 +30,10 @@ public class Sector {
 	@OneToOne
 	@JoinColumn(name = "ID_LEADER", referencedColumnName = "ID_EMPLOYEE")
 	private Employee leader;
+	
+	@OneToMany(mappedBy = "sector")
+	@JsonIgnore
+	private Set<Employee> employees = new HashSet<>();
 	
 	@Deprecated
 	public Sector() {}
@@ -51,6 +61,10 @@ public class Sector {
 
 	public void setLeader(Employee leader) {
 		this.leader = leader;
+	}
+
+	public Set<Employee> getEmployees() {
+		return employees;
 	}
 	
 }

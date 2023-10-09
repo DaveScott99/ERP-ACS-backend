@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.astro.erpAcs.entities.enums.PriorityTask;
 import com.astro.erpAcs.entities.enums.StatusTask;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,7 +38,7 @@ public class Task {
 	private String description;
 	
 	@Column(name = "PRIORITY_TASK")
-	private Integer priority;
+	private Integer priorityTask;
 	
 	@Column(name = "STATUS_TASK")
 	private Integer statusTask;
@@ -65,11 +66,11 @@ public class Task {
 	@Deprecated
 	public Task() {}
 
-	public Task(String title, String description, Integer priority, StatusTask statusTask, String type,
+	public Task(String title, String description, PriorityTask priorityTask, StatusTask statusTask, String type,
 			Instant creationDate, Sector sector) {
 		this.title = title;
 		this.description = description;
-		this.priority = priority;
+		setPriorityTask(priorityTask);
 		setStatusTask(statusTask);
 		this.type = type;
 		this.creationDate = creationDate;
@@ -92,12 +93,14 @@ public class Task {
 		this.description = description;
 	}
 
-	public Integer getPriority() {
-		return priority;
+	public PriorityTask getPriorityTask() {
+		return PriorityTask.valueOf(priorityTask);
 	}
 
-	public void setPriority(Integer priority) {
-		this.priority = priority;
+	public void setPriorityTask(PriorityTask priority) {
+		if (priority != null) {
+			this.priorityTask = priority.getCode();
+		}
 	}
 
 	public StatusTask getStatusTask() {

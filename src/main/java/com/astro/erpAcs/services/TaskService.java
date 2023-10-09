@@ -42,7 +42,7 @@ public class TaskService {
 				 .map(taskFound -> {
 					 
 					 taskFound.setTitle(taskUpdateData.getTitle());
-					 taskFound.setPriority(taskUpdateData.getPriority());
+					 taskFound.setPriorityTask(taskUpdateData.getPriorityTask());
 					 taskFound.setStatusTask(taskUpdateData.getStatusTask());
 					 taskFound.setSector(taskUpdateData.getSector());
 					 taskFound.setDescription(taskUpdateData.getDescription());

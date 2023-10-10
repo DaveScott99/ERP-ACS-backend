@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.astro.erpAcs.entities.enums.PriorityTask;
 import com.astro.erpAcs.entities.enums.StatusTask;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,17 +50,18 @@ public class Task {
 	@CreationTimestamp
 	private Instant creationDate;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "TASK_EMPLOYEE",
         joinColumns = @JoinColumn(name = "ID_TASK"),
         inverseJoinColumns = @JoinColumn(name = "ID_EMPLOYEE")
 	)
-	@JsonIgnore
+	@JsonIgnoreProperties({"tasks", "sector"})
 	private Set<Employee> employees = new HashSet<>();
 	
-	@ManyToOne
-	@JoinColumn(name = "ID_SECTOR", nullable = true)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_SECTOR")
+	@JsonIgnoreProperties({"leader", "employees", "tasks"})
 	private Sector sector;
 	
 	@Deprecated

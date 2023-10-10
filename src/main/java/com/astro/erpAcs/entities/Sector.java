@@ -33,11 +33,11 @@ public class Sector {
 	@JoinColumn(name = "ID_LEADER", referencedColumnName = "ID_EMPLOYEE")
 	private Employee leader;
 	
-	@OneToMany(mappedBy = "sector", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sector", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Employee> employees = new HashSet<>();
 	
-	@OneToMany(mappedBy = "sector", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "sector", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Task> tasks = new HashSet<>();
 	

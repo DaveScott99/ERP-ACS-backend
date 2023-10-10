@@ -21,18 +21,17 @@ public class SectorService {
 		this.sectorRepository = sectorRepository;
 	}
 	
-	@Transactional(readOnly = true)
+	@Transactional
 	public List<Sector> findAll() {
 		return sectorRepository.findAll();
 	}
 	
-	@Transactional(readOnly = true)
+	@Transactional
 	public Sector findById(Long id) {
 		return sectorRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Setor não encontrado"));
 	}
 	
-	@Transactional
 	public Sector register(Sector sector) {
 		return sectorRepository.save(sector);
 	}
@@ -58,7 +57,6 @@ public class SectorService {
 		
 	}
 	
-	@Transactional
 	public Sector update(Long sectorId, Sector sectorUpdateData){
 		return sectorRepository.findById(sectorId)
 				 .map(sectorFound -> {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,38 +22,43 @@ import com.astro.erpAcs.services.TaskService;
 @RequestMapping("/tasks")
 public class TaskController {
 
-	private final TaskService TaskService;
+	private final TaskService taskService;
 
 	public TaskController(TaskService TaskService) {
-		this.TaskService = TaskService;
+		this.taskService = TaskService;
 	}
 	
 	@GetMapping
 	public ResponseEntity<List<Task>> findAllPaged(){
-		List<Task> users = TaskService.findAll();
+		List<Task> users = taskService.findAll();
 		return ResponseEntity.ok().body(users);
 	}
 	
 	@GetMapping(value = "/{taskId}")
 	public ResponseEntity<Task> findById(@PathVariable Long taskId){
-		return ResponseEntity.ok().body(TaskService.findById(taskId));
+		return ResponseEntity.ok().body(taskService.findById(taskId));
 	}
 	
 	@PostMapping
 	public ResponseEntity<Task> register(@RequestBody Task RegisterDTO) {
-		Task user = TaskService.register(RegisterDTO);
+		Task user = taskService.register(RegisterDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).body(user);
 	}
 	
+	@PostMapping(value = "/addEmployee")
+	public ResponseEntity<String> addEmployeeOnTask(@RequestParam Long taskId, @RequestParam Long employeeId) {
+		return ResponseEntity.ok(taskService.addEmployeeOnTask(taskId, employeeId));
+	}
+	
 	@PutMapping(value = "/{taskId}")
 	public ResponseEntity<Task> update(@PathVariable Long taskId, @RequestBody Task userUpdateDto){
-		return ResponseEntity.ok().body(TaskService.update(taskId, userUpdateDto));
+		return ResponseEntity.ok().body(taskService.update(taskId, userUpdateDto));
 	}
 	
 	@DeleteMapping(value = "/{taskId}")
 	public ResponseEntity<Void> deletePost(@PathVariable Long taskId) {
-		TaskService.delete(taskId);
+		taskService.delete(taskId);
 		return ResponseEntity.noContent().build();
 	}
 }

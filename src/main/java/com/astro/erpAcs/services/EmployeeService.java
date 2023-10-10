@@ -20,23 +20,21 @@ public class EmployeeService {
 		this.EmployeeRepository = EmployeeRepository;
 	}
 	
-	@Transactional(readOnly = true)
+	@Transactional
 	public List<Employee> findAll() {
 		return EmployeeRepository.findAll();
 	}
 	
-	@Transactional(readOnly = true)
+	@Transactional
 	public Employee findById(Long id) {
 		return EmployeeRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 	}
 	
-	@Transactional
 	public Employee register(Employee Employee) {
 		return EmployeeRepository.save(Employee);
 	}
 	
-	@Transactional
 	public Employee update(Long EmployeeId, Employee EmployeeUpdateData){
 		return EmployeeRepository.findById(EmployeeId)
 				 .map(EmployeeFound -> {

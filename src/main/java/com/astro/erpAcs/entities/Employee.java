@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,16 +35,16 @@ public class Employee {
 	@OneToOne(mappedBy = "leader")
 	private Sector leaderSector;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_SECTOR", nullable = true)
-	@JsonIgnore
 	private Sector sector;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_OFFICE", nullable = true)
 	private Office office;
 	
-	@ManyToMany(mappedBy = "employees")
+	@ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<Task> tasks = new HashSet<>();
 	
 	@Deprecated
@@ -96,6 +97,10 @@ public class Employee {
 
 	public void setSector(Sector sector) {
 		this.sector = sector;
+	}
+
+	public Set<Task> getTasks() {
+		return tasks;
 	}
 
 }

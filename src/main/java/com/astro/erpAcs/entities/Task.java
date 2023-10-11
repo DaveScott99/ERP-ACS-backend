@@ -1,10 +1,12 @@
 package com.astro.erpAcs.entities;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.astro.erpAcs.entities.enums.PriorityTask;
 import com.astro.erpAcs.entities.enums.StatusTask;
@@ -34,21 +36,29 @@ public class Task {
 	@Column(name = "TITLE_TASK", nullable = false)
 	private String title;
 	
-	@Column(name = "DESCRIPTION_TASK")
+	@Column(name = "DESCRIPTION_TASK", nullable = false)
 	private String description;
 	
-	@Column(name = "PRIORITY_TASK")
+	@Column(name = "PRIORITY_TASK", nullable = false)
 	private Integer priorityTask;
 	
-	@Column(name = "STATUS_TASK")
+	@Column(name = "STATUS_TASK", nullable = true)
 	private Integer statusTask;
 	
-	@Column(name = "TYPE_TASK")
+	@Column(name = "TYPE_TASK", nullable = false)
 	private String type;
+	
+	@Column(name = "START_AT_TASK", nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime startAt;
+	
+	@Column(name = "END_AT_TASK", nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime endAt;
 	
 	@Column(name = "CREATION_MOMEMT_TASK")
 	@CreationTimestamp
-	private Instant creationDate;
+	private Instant createdAt;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -60,7 +70,7 @@ public class Task {
 	private Set<Employee> employees = new HashSet<>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ID_SECTOR")
+	@JoinColumn(name = "ID_SECTOR", nullable = false)
 	@JsonIgnoreProperties({"leader", "employees", "tasks"})
 	private Sector sector;
 	
@@ -68,14 +78,26 @@ public class Task {
 	public Task() {}
 
 	public Task(String title, String description, PriorityTask priorityTask, StatusTask statusTask, String type,
-			Instant creationDate, Sector sector) {
+			 Sector sector, LocalDateTime startAt, LocalDateTime endAt) {
 		this.title = title;
 		this.description = description;
 		setPriorityTask(priorityTask);
 		setStatusTask(statusTask);
 		this.type = type;
-		this.creationDate = creationDate;
 		this.sector = sector;
+		this.startAt = startAt;
+		this.endAt = endAt;
+	}
+	
+	public Task(String title, String description, PriorityTask priorityTask, String type,
+			 Sector sector, LocalDateTime startAt, LocalDateTime endAt) {
+		this.title = title;
+		this.description = description;
+		setPriorityTask(priorityTask);
+		this.type = type;
+		this.sector = sector;
+		this.startAt = startAt;
+		this.endAt = endAt;
 	}
 
 	public String getTitle() {
@@ -121,13 +143,29 @@ public class Task {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public Instant getCreationDate() {
-		return creationDate;
+	
+	public LocalDateTime getStartAt() {
+		return startAt;
 	}
 
-	public void setCreationDate(Instant creationDate) {
-		this.creationDate = creationDate;
+	public void setStartAt(LocalDateTime startAt) {
+		this.startAt = startAt;
+	}
+
+	public LocalDateTime getEndAt() {
+		return endAt;
+	}
+
+	public void setEndAt(LocalDateTime endAt) {
+		this.endAt = endAt;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public Sector getSector() {

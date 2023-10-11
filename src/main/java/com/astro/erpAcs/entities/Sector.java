@@ -1,7 +1,10 @@
 package com.astro.erpAcs.entities;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,6 +31,10 @@ public class Sector {
 	
 	@Column(name = "NAME_SECTOR", nullable = false)
 	private String nameSector;
+	
+	@Column(name = "CREATION_MOMEMT_TASK")
+	@CreationTimestamp
+	private Instant createdAt;
 	
 	@OneToOne
 	@JoinColumn(name = "ID_LEADER", referencedColumnName = "ID_EMPLOYEE")
@@ -75,6 +82,14 @@ public class Sector {
 
 	public Set<Task> getTasks() {
 		return tasks;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
 	}
 	
 }

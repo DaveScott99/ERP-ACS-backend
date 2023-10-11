@@ -1,5 +1,6 @@
 package com.astro.erpAcs.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.entities.Task;
+import com.astro.erpAcs.entities.enums.StatusTask;
 import com.astro.erpAcs.repositories.EmployeeRepository;
 import com.astro.erpAcs.repositories.TaskRepository;
 
@@ -36,8 +38,21 @@ public class TaskService {
 	}
 	
 	@Transactional
-	public Task register(Task Task) {
-		return taskRepository.save(Task);
+	public Task register(Task task) {
+						
+		if (task.getEndAt().isAfter(LocalDateTime.now()) && task.getStartAt().getDayOfMonth() >= LocalDateTime.now().getDayOfMonth()) {
+			
+			if (task.getStartAt().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()) {
+				task.setStatusTask(StatusTask.IN_PROGRESS);
+				return taskRepository.save(task);
+			}
+			
+			task.setStatusTask(StatusTask.NOT_STARTED);
+			return taskRepository.save(task);
+		}
+		
+		throw new RuntimeException("ERRO: Datas inválidas");
+	
 	}
 	
 	@Transactional

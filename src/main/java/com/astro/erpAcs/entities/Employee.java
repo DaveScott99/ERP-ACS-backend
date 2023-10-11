@@ -1,7 +1,10 @@
 package com.astro.erpAcs.entities;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,14 +29,18 @@ public class Employee {
 	@Column(name = "ID_EMPLOYEE")
 	private Long id;
 	
-	@Column(name = "FIRST_NAME")
+	@Column(name = "FIRST_NAME", nullable = false)
 	private String firstName;
 	
-	@Column(name = "LAST_NAME")
+	@Column(name = "LAST_NAME", nullable = false)
 	private String lastName;
 	
 	@OneToOne(mappedBy = "leader")
 	private Sector leaderSector;
+	
+	@Column(name = "CREATION_MOMEMT_TASK")
+	@CreationTimestamp
+	private Instant createdAt;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_SECTOR", nullable = true)
@@ -101,6 +108,14 @@ public class Employee {
 
 	public Set<Task> getTasks() {
 		return tasks;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
 	}
 
 }

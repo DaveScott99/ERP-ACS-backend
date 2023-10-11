@@ -1,7 +1,10 @@
 package com.astro.erpAcs.entities;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,6 +29,10 @@ public class Office {
 	
 	@Column(name = "NAME_OFFICE", nullable = false)
 	private String officeName;
+	
+	@Column(name = "CREATION_MOMEMT_TASK")
+	@CreationTimestamp
+	private Instant createdAt;
 
 	@OneToMany(mappedBy = "office", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -52,6 +59,14 @@ public class Office {
 
 	public Set<Employee> getEmployees() {
 		return employees;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
 	}
 	
 }

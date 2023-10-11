@@ -60,6 +60,9 @@ public class Task {
 	@CreationTimestamp
 	private Instant createdAt;
 	
+	@Column(name = "RESULT_TASK")
+	private String resultTask;
+	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "TASK_EMPLOYEE",
@@ -76,18 +79,6 @@ public class Task {
 	
 	@Deprecated
 	public Task() {}
-
-	public Task(String title, String description, PriorityTask priorityTask, StatusTask statusTask, String type,
-			 Sector sector, LocalDateTime startAt, LocalDateTime endAt) {
-		this.title = title;
-		this.description = description;
-		setPriorityTask(priorityTask);
-		setStatusTask(statusTask);
-		this.type = type;
-		this.sector = sector;
-		this.startAt = startAt;
-		this.endAt = endAt;
-	}
 	
 	public Task(String title, String description, PriorityTask priorityTask, String type,
 			 Sector sector, LocalDateTime startAt, LocalDateTime endAt) {
@@ -182,6 +173,14 @@ public class Task {
 
 	public Set<Employee> getEmployees() {
 		return employees;
+	}
+
+	public String getResultTask() {
+		return resultTask;
+	}
+
+	public void setResultTask(String resultTask) {
+		this.resultTask = resultTask;
 	}
 	
 }

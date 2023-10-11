@@ -55,6 +55,31 @@ public class TaskService {
 	
 	}
 	
+	public String employeeCompleteTask(Long taskId, Long employeeId, String resultTask) {
+		
+		Employee employeeOfSector = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado"));
+		
+		return taskRepository.findById(taskId)
+		
+			.map(taskFound -> {
+				
+				if (taskFound.getSector().equals(employeeOfSector.getSector())) {
+					taskFound.setResultTask(resultTask);
+					taskFound.setStatusTask(StatusTask.WAITING_CONFIRMATION);
+					
+					taskRepository.save(taskFound);
+					
+					return "Resultado enviado com sucesso, aguardando confirmação";
+				}
+				
+				return "ERRO: Funcionário não é do mesmo setor";
+			})
+		
+			.orElseThrow(() -> new EntityNotFoundException("Tarefa não encontrada"));
+		
+	}
+	
 	@Transactional
 	public String addEmployeeOnTask(Long taskId, Long employeeId) {
 		

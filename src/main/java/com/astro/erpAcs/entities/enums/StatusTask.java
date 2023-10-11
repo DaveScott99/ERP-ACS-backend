@@ -4,7 +4,8 @@ public enum StatusTask {
 
 	NOT_STARTED(1),
 	IN_PROGRESS(2), 
-	COMPLETED(3);
+	COMPLETED(3),
+	WAITING_CONFIRMATION(4);
 	
 	private int code;
 	

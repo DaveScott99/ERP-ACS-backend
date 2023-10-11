@@ -51,6 +51,11 @@ public class TaskController {
 		return ResponseEntity.ok(taskService.addEmployeeOnTask(taskId, employeeId));
 	}
 	
+	@PostMapping(value = "/{taskId}/employeeCompleteTask/{employeeId}")
+	public ResponseEntity<String> employeeCompleteTask(@PathVariable Long taskId, @PathVariable Long employeeId, @RequestBody String resultTask) {
+		return ResponseEntity.ok(taskService.employeeCompleteTask(taskId, employeeId, resultTask));
+	}
+	
 	@PutMapping(value = "/{taskId}")
 	public ResponseEntity<Task> update(@PathVariable Long taskId, @RequestBody Task userUpdateDto){
 		return ResponseEntity.ok().body(taskService.update(taskId, userUpdateDto));

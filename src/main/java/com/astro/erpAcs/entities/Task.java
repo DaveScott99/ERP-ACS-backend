@@ -74,7 +74,7 @@ public class Task {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_SECTOR", nullable = false)
-	@JsonIgnoreProperties({"leader", "employees", "tasks"})
+	@JsonIgnoreProperties({"leader","employees", "tasks"})
 	private Sector sector;
 	
 	@Deprecated

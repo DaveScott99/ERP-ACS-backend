@@ -118,4 +118,8 @@ public class Employee {
 		this.createdAt = createdAt;
 	}
 
+	public Sector getLeaderSector() {
+		return leaderSector;
+	}
+
 }

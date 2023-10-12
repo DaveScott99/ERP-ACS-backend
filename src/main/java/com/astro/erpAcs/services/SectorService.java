@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.entities.Sector;
+import com.astro.erpAcs.repositories.EmployeeRepository;
 import com.astro.erpAcs.repositories.SectorRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -16,9 +17,11 @@ import jakarta.persistence.EntityNotFoundException;
 public class SectorService {
 
 	private final SectorRepository sectorRepository;
+	private final EmployeeRepository employeeRepository;
 
-	public SectorService(SectorRepository sectorRepository) {
+	public SectorService(SectorRepository sectorRepository, EmployeeRepository employeeRepository) {
 		this.sectorRepository = sectorRepository;
+		this.employeeRepository = employeeRepository;
 	}
 	
 	@Transactional
@@ -36,7 +39,10 @@ public class SectorService {
 		return sectorRepository.save(sector);
 	}
 	
-	public String addEmployee(Long sectorId, Employee employee) {
+	public String addEmployee(Long sectorId, Long employeeId) {
+		
+		Employee employee = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado"));
 		
 		return sectorRepository.findById(sectorId)
 				.map(sectorFound -> {

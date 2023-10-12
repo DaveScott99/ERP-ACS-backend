@@ -12,6 +12,8 @@ import com.astro.erpAcs.entities.Task;
 import com.astro.erpAcs.entities.enums.StatusTask;
 import com.astro.erpAcs.repositories.EmployeeRepository;
 import com.astro.erpAcs.repositories.TaskRepository;
+import com.astro.erpAcs.util.MessageResponse;
+import com.astro.erpAcs.util.StatusMessage;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -55,7 +57,7 @@ public class TaskService {
 	
 	}
 	
-	public String employeeCompleteTask(Long taskId, Long employeeId, String resultTask) {
+	public MessageResponse completeTask(Long taskId, Long employeeId, String resultTask) {
 		
 		Employee employeeOfSector = employeeRepository.findById(employeeId)
 				.orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado"));
@@ -64,16 +66,20 @@ public class TaskService {
 		
 			.map(taskFound -> {
 				
-				if (taskFound.getSector().equals(employeeOfSector.getSector())) {
+				if (taskFound.getSector().equals(employeeOfSector.getSector()) && employeeOfSector.getLeaderSector() == null) {
 					taskFound.setResultTask(resultTask);
 					taskFound.setStatusTask(StatusTask.WAITING_CONFIRMATION);
-					
 					taskRepository.save(taskFound);
-					
-					return "Resultado enviado com sucesso, aguardando confirmação";
+					return new MessageResponse("Resultado enviado com sucesso, aguardando confirmação.", StatusMessage.SUCCESSFUL);
+				}
+				else if (taskFound.getSector().equals(employeeOfSector.getSector()) && taskFound.getSector().getLeader().equals(employeeOfSector)) {
+					taskFound.setStatusTask(StatusTask.COMPLETED);
+					taskRepository.save(taskFound);
+					return new MessageResponse("Tarefa concluida com sucesso!", StatusMessage.SUCCESSFUL);
+
 				}
 				
-				return "ERRO: Funcionário não é do mesmo setor";
+				return new MessageResponse("ERRO: Funcionário não é do mesmo setor", StatusMessage.ERROR);
 			})
 		
 			.orElseThrow(() -> new EntityNotFoundException("Tarefa não encontrada"));
@@ -81,7 +87,7 @@ public class TaskService {
 	}
 	
 	@Transactional
-	public String addEmployeeOnTask(Long taskId, Long employeeId) {
+	public MessageResponse addEmployeeOnTask(Long taskId, Long employeeId) {
 		
 		return taskRepository.findById(taskId)
 				.map(taskFound -> {
@@ -92,15 +98,17 @@ public class TaskService {
 					if (taskFound.getSector().equals(employeeForAdd.getSector())) {
 						taskFound.getEmployees().add(employeeForAdd);
 						taskRepository.save(taskFound);
-						return "Funcionário adicionado com sucesso";
+					
+						return new MessageResponse("Funcionário adicionado com sucesso", StatusMessage.SUCCESSFUL);
 					}
-					return null;
-						
+	
+					return new MessageResponse("Funcionário não é do mesmo setor", StatusMessage.ERROR);
+					
 				})
 				.orElseThrow(() -> new EntityNotFoundException("Tarefa não encontrada"));
 		
 	}
-	
+		
 	@Transactional
 	public Task update(Long taskId, Task taskUpdateData){
 		return taskRepository.findById(taskId)

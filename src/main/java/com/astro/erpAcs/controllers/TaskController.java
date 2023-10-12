@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.astro.erpAcs.entities.Task;
 import com.astro.erpAcs.services.TaskService;
+import com.astro.erpAcs.util.MessageResponse;
 
 @RestController
 @RequestMapping("/tasks")
@@ -47,20 +48,20 @@ public class TaskController {
 	}
 	
 	@PostMapping(value = "/addEmployee")
-	public ResponseEntity<String> addEmployeeOnTask(@RequestParam Long taskId, @RequestParam Long employeeId) {
+	public ResponseEntity<MessageResponse> addEmployeeOnTask(@RequestParam Long taskId, @RequestParam Long employeeId) {
 		return ResponseEntity.ok(taskService.addEmployeeOnTask(taskId, employeeId));
 	}
 	
-	@PostMapping(value = "/{taskId}/employeeCompleteTask/{employeeId}")
-	public ResponseEntity<String> employeeCompleteTask(@PathVariable Long taskId, @PathVariable Long employeeId, @RequestBody String resultTask) {
-		return ResponseEntity.ok(taskService.employeeCompleteTask(taskId, employeeId, resultTask));
+	@PostMapping(value = "/{taskId}/completeTask/{employeeId}")
+	public ResponseEntity<MessageResponse> employeeCompleteTask(@PathVariable Long taskId, @PathVariable Long employeeId, @RequestBody String resultTask) {
+		return ResponseEntity.ok(taskService.completeTask(taskId, employeeId, resultTask));
 	}
 	
 	@PutMapping(value = "/{taskId}")
 	public ResponseEntity<Task> update(@PathVariable Long taskId, @RequestBody Task userUpdateDto){
 		return ResponseEntity.ok().body(taskService.update(taskId, userUpdateDto));
 	}
-	
+		
 	@DeleteMapping(value = "/{taskId}")
 	public ResponseEntity<Void> deletePost(@PathVariable Long taskId) {
 		taskService.delete(taskId);

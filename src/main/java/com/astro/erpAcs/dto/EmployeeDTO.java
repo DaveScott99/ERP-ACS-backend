@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.astro.erpAcs.entities.Employee;
-import com.astro.erpAcs.entities.Office;
 import com.astro.erpAcs.entities.Sector;
 
 public class EmployeeDTO implements Serializable {
@@ -14,14 +13,14 @@ public class EmployeeDTO implements Serializable {
 	private Long id;
 	private String firstName;
 	private String lastName;
-	private Office office;
+	private OfficeDTO office;
 	private Sector sector;
 
 	public EmployeeDTO(Employee entity) {
 		id = entity.getId();
 		firstName = entity.getFirstName();
 		lastName = entity.getLastName();
-		office = entity.getOffice();
+		office = new OfficeDTO(entity.getOffice());
 		sector = entity.getSector();
 	}
 
@@ -37,7 +36,7 @@ public class EmployeeDTO implements Serializable {
 		return lastName;
 	}
 
-	public Office getOffice() {
+	public OfficeDTO getOffice() {
 		return office;
 	}
 

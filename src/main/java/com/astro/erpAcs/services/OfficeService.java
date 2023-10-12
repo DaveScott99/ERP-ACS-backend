@@ -1,57 +1,66 @@
 package com.astro.erpAcs.services;
 
-import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.astro.erpAcs.dto.OfficeDTO;
+import com.astro.erpAcs.dto.mapper.OfficeMapper;
 import com.astro.erpAcs.entities.Office;
 import com.astro.erpAcs.repositories.OfficeRepository;
+import com.astro.erpAcs.util.MessageResponse;
+import com.astro.erpAcs.util.StatusMessage;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class OfficeService {
 
-	private final OfficeRepository OfficeRepository;
+	private final OfficeRepository officeRepository;
 
-	public OfficeService(OfficeRepository OfficeRepository) {
-		this.OfficeRepository = OfficeRepository;
+	private final OfficeMapper officeMapper;
+	
+	public OfficeService(OfficeRepository officeRepository, OfficeMapper officeMapper) {
+		this.officeRepository = officeRepository;
+		this.officeMapper = officeMapper;
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Office> findAll() {
-		return OfficeRepository.findAll();
+	public Page<OfficeDTO> findAll(Pageable pageable) {
+		return officeRepository.findAll(pageable)
+			.map(officeMapper::toDTO);
 	}
 	
 	@Transactional(readOnly = true)
-	public Office findById(Long id) {
-		return OfficeRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+	public OfficeDTO findById(Long id) {
+		return officeRepository.findById(id)
+				.map(officeMapper::toDTO)
+				.orElseThrow(() -> new EntityNotFoundException("Cargo não encontrado"));
 	}
 	
 	@Transactional
-	public Office register(Office office) {
-		return OfficeRepository.save(office);
+	public OfficeDTO register(Office office) {
+		return officeMapper.toDTO(officeRepository.save(office));
 	}
 	
 	@Transactional
-	public Office update(Long officeId, Office officeUpdateData){
-		return OfficeRepository.findById(officeId)
+	public OfficeDTO update(Long officeId, Office officeUpdateData){
+		return officeRepository.findById(officeId)
 				 .map(OfficeFound -> {
 					 OfficeFound.setOfficeName(officeUpdateData.getOfficeName());
-					 return OfficeRepository.save(OfficeFound);
+					 return officeMapper.toDTO(officeRepository.save(OfficeFound));
 				 })
-				 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado " + officeId));
+				 .orElseThrow(() -> new EntityNotFoundException("Cargo não encontrado " + officeId));
 	}
 	
-	public void delete(Long officeId) {
+	public MessageResponse delete(Long officeId) {
 		try {
-			OfficeRepository.findById(officeId)
+			return officeRepository.findById(officeId)
 				  .map(post -> {
-					  	OfficeRepository.deleteById(officeId);
-					  	return "Usuário excluido com sucesso";
+					  	officeRepository.deleteById(officeId);
+					  	return new MessageResponse("Cargo excluido com sucesso", StatusMessage.SUCCESSFUL);					  	
 					  })
 				  .orElseThrow(() -> new EntityNotFoundException("Cargo não encontrado"));
 		}

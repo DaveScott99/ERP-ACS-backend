@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.astro.erpAcs.dto.EmployeeDTO;
 import com.astro.erpAcs.dto.EmployeeMinDTO;
 import com.astro.erpAcs.entities.Employee;
+import com.astro.erpAcs.entities.Office;
 
 @Component
 public class EmployeeMapper {
@@ -37,7 +38,7 @@ public class EmployeeMapper {
 		
 		employee.setFirstName(employeeDTO.getFirstName());
 		employee.setLastName(employeeDTO.getLastName());
-		employee.setOffice(employeeDTO.getOffice());
+		employee.setOffice(new Office(employeeDTO.getOffice().getOfficeName()));
 		employee.setSector(employeeDTO.getSector());
 		
 		return employee;

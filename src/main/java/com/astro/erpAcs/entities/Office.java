@@ -38,7 +38,6 @@ public class Office {
 	@JsonIgnore
 	private Set<Employee> employees = new HashSet<>();
 
-	@Deprecated
 	public Office() {}
 
 	public Office(String officeName) {
@@ -51,6 +50,10 @@ public class Office {
 
 	public void setOfficeName(String officeName) {
 		this.officeName = officeName;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getId() {

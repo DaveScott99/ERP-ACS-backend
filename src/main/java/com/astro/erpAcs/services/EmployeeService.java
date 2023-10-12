@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.astro.erpAcs.dto.EmployeeDTO;
+import com.astro.erpAcs.dto.EmployeeMinDTO;
 import com.astro.erpAcs.dto.mapper.EmployeeMapper;
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.repositories.EmployeeRepository;
@@ -27,9 +28,9 @@ public class EmployeeService {
 	}
 	
 	@Transactional
-	public Page<EmployeeDTO> findAll(Pageable pageable) {
+	public Page<EmployeeMinDTO> findAll(Pageable pageable) {
 		return employeeRepository.findAll(pageable)
-				.map(employeeMapper::toDTO);
+				.map(employeeMapper::toMinDTO);
 	}
 	
 	@Transactional

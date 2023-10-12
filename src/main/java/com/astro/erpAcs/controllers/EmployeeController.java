@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.astro.erpAcs.dto.EmployeeDTO;
+import com.astro.erpAcs.dto.EmployeeMinDTO;
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.services.EmployeeService;
 import com.astro.erpAcs.util.MessageResponse;
@@ -32,8 +33,8 @@ public class EmployeeController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<EmployeeDTO>> findAllPaged(@PageableDefault(size = 10) Pageable pageable){
-		Page<EmployeeDTO> users = EmployeeService.findAll(pageable);
+	public ResponseEntity<Page<EmployeeMinDTO>> findAllPaged(@PageableDefault(size = 10) Pageable pageable){
+		Page<EmployeeMinDTO> users = EmployeeService.findAll(pageable);
 		return ResponseEntity.ok().body(users);
 	}
 	

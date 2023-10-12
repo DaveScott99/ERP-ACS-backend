@@ -54,7 +54,6 @@ public class Employee {
 	@JsonIgnore
 	private Set<Task> tasks = new HashSet<>();
 	
-	@Deprecated
 	public Employee() {}
 
 	public Employee(String firstName, String lastName, Office office, Sector sector) {
@@ -72,6 +71,10 @@ public class Employee {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {

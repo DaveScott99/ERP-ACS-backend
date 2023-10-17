@@ -11,10 +11,9 @@ import com.astro.erpAcs.dto.EmployeeMinDTO;
 import com.astro.erpAcs.dto.mapper.EmployeeMapper;
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.repositories.EmployeeRepository;
+import com.astro.erpAcs.services.exceptions.EntityNotFoundException;
 import com.astro.erpAcs.util.MessageResponse;
 import com.astro.erpAcs.util.StatusMessage;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class EmployeeService {
@@ -37,7 +36,7 @@ public class EmployeeService {
 	public EmployeeDTO findById(Long id) {
 		return employeeRepository.findById(id)
 				.map(employeeMapper::toDTO)
-				.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+				.orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado ID: " + id));
 	}
 	
 	public EmployeeDTO register(Employee employee) {
@@ -51,7 +50,7 @@ public class EmployeeService {
 					 employeeFound.setLastName(employeeUpdateData.getLastName());
 					 return employeeMapper.toDTO(employeeRepository.save(employeeFound));
 				 })
-				 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado " + employeeId));
+				 .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado ID: " + employeeId));
 	}
 	
 	public MessageResponse delete(Long employeeId) {

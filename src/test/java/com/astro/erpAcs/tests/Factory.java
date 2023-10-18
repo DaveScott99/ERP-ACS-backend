@@ -1,6 +1,7 @@
 package com.astro.erpAcs.tests;
 
 import com.astro.erpAcs.dto.EmployeeMinDTO;
+import com.astro.erpAcs.dto.OfficeDTO;
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.entities.Office;
 
@@ -14,4 +15,11 @@ public class Factory {
 		return new EmployeeMinDTO(createEmployee());
 	}
 	
+	public static Office createOffice() {
+		return new Office("Analista de Sistemas");
+	}
+	
+	public static OfficeDTO createOfficeDTO() {
+		return new OfficeDTO(createOffice());
+	}
 }

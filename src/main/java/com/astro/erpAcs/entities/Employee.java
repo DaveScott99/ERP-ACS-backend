@@ -55,15 +55,23 @@ public class Employee {
 	private Set<Task> tasks = new HashSet<>();
 	
 	public Employee() {}
+	
+	public Employee(Long id, String firstName, String lastName) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 
-	public Employee(String firstName, String lastName, Office office, Sector sector) {
+	public Employee(Long id, String firstName, String lastName, Office office, Sector sector) {
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.office = office;
 		this.sector = sector;
 	}
 	
-	public Employee(String firstName, String lastName, Office office) {
+	public Employee(Long id, String firstName, String lastName, Office office) {
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.office = office;
@@ -124,5 +132,5 @@ public class Employee {
 	public Sector getLeaderSector() {
 		return leaderSector;
 	}
-
+	
 }

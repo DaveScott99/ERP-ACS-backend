@@ -51,6 +51,10 @@ public class Sector {
 	@Deprecated
 	public Sector() {}
 	
+	public Sector(String nameSector) {
+		this.nameSector = nameSector;
+	}
+
 	public Sector(String nameSector, Employee leader) {
 		this.nameSector = nameSector;
 		this.leader = leader;

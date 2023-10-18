@@ -20,43 +20,43 @@ import com.astro.erpAcs.dto.EmployeeDTO;
 import com.astro.erpAcs.dto.EmployeeMinDTO;
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.services.EmployeeService;
-import com.astro.erpAcs.util.MessageResponse;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	private final EmployeeService EmployeeService;
+	private final EmployeeService employeeService;
 
-	public EmployeeController(EmployeeService EmployeeService) {
-		this.EmployeeService = EmployeeService;
+	public EmployeeController(EmployeeService employeeService) {
+		this.employeeService = employeeService;
 	}
 	
 	@GetMapping
 	public ResponseEntity<Page<EmployeeMinDTO>> findAllPaged(@PageableDefault(size = 10) Pageable pageable){
-		Page<EmployeeMinDTO> users = EmployeeService.findAll(pageable);
+		Page<EmployeeMinDTO> users = employeeService.findAll(pageable);
 		return ResponseEntity.ok().body(users);
 	}
 	
 	@GetMapping(value = "/{employeeId}")
 	public ResponseEntity<EmployeeDTO> findById(@PathVariable Long employeeId){
-		return ResponseEntity.ok().body(EmployeeService.findById(employeeId));
+		return ResponseEntity.ok().body(employeeService.findById(employeeId));
 	}
 	
 	@PostMapping
 	public ResponseEntity<EmployeeDTO> register(@RequestBody Employee employee) {
-		EmployeeDTO user = EmployeeService.register(employee);
+		EmployeeDTO user = employeeService.register(employee);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).body(user);
 	}
 	
 	@PutMapping(value = "/{employeeId}")
 	public ResponseEntity<EmployeeDTO> update(@PathVariable Long employeeId, @RequestBody Employee userUpdateDto){
-		return ResponseEntity.ok().body(EmployeeService.update(employeeId, userUpdateDto));
+		return ResponseEntity.ok().body(employeeService.update(employeeId, userUpdateDto));
 	}
 	
 	@DeleteMapping(value = "/{employeeId}")
-	public ResponseEntity<MessageResponse> delete(@PathVariable Long employeeId) {
-		return ResponseEntity.ok().body(EmployeeService.delete(employeeId));
+	public ResponseEntity<Void> delete(@PathVariable Long employeeId) {
+		employeeService.delete(employeeId);
+		return ResponseEntity.noContent().build();
 	}
 }

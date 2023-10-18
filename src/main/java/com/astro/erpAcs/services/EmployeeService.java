@@ -1,6 +1,7 @@
 package com.astro.erpAcs.services;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,8 @@ import com.astro.erpAcs.dto.EmployeeMinDTO;
 import com.astro.erpAcs.dto.mapper.EmployeeMapper;
 import com.astro.erpAcs.entities.Employee;
 import com.astro.erpAcs.repositories.EmployeeRepository;
+import com.astro.erpAcs.services.exceptions.DatabaseException;
 import com.astro.erpAcs.services.exceptions.EntityNotFoundException;
-import com.astro.erpAcs.util.MessageResponse;
-import com.astro.erpAcs.util.StatusMessage;
 
 @Service
 public class EmployeeService {
@@ -32,7 +32,6 @@ public class EmployeeService {
 				.map(employeeMapper::toMinDTO);
 	}
 	
-	@Transactional
 	public EmployeeDTO findById(Long id) {
 		return employeeRepository.findById(id)
 				.map(employeeMapper::toDTO)
@@ -53,17 +52,15 @@ public class EmployeeService {
 				 .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado ID: " + employeeId));
 	}
 	
-	public MessageResponse delete(Long employeeId) {
+	public void delete(Long employeeId) {
 		try {
-			return employeeRepository.findById(employeeId)
-				  .map(employeeFound -> {
-					  	employeeRepository.deleteById(employeeId);
-					  	return new MessageResponse("Funcionário excluido com sucesso", StatusMessage.SUCCESSFUL);
-					  })
-				  .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado"));
+			employeeRepository.deleteById(employeeId);
+		}
+		catch (EmptyResultDataAccessException e) {
+			throw new EntityNotFoundException("Funcionário não encontrado ID: " + employeeId);
 		}
 		catch (DataIntegrityViolationException e) {
-			throw new RuntimeException("Violação de integridade");
+			throw new DatabaseException("Violação de integridade");
 		}
 	}
 }

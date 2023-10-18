@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.astro.erpAcs.dto.OfficeDTO;
 import com.astro.erpAcs.entities.Office;
 import com.astro.erpAcs.services.OfficeService;
-import com.astro.erpAcs.util.MessageResponse;
 
 @RestController
 @RequestMapping("/offices")
@@ -55,7 +54,8 @@ public class OfficeController {
 	}
 	
 	@DeleteMapping(value = "/{officeId}")
-	public ResponseEntity<MessageResponse> deletePost(@PathVariable Long officeId) {
-		return ResponseEntity.ok().body(OfficeService.delete(officeId));
+	public ResponseEntity<Void> deletePost(@PathVariable Long officeId) {
+		OfficeService.delete(officeId);
+		return ResponseEntity.noContent().build();
 	}
 }

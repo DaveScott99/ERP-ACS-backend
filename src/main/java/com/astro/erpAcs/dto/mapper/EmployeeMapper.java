@@ -38,7 +38,7 @@ public class EmployeeMapper {
 		
 		employee.setFirstName(employeeDTO.getFirstName());
 		employee.setLastName(employeeDTO.getLastName());
-		employee.setOffice(new Office(employeeDTO.getOffice().getOfficeName()));
+		employee.setOffice(new Office(employeeDTO.getOffice().getId(), employeeDTO.getOffice().getOfficeName()));
 		employee.setSector(employeeDTO.getSector());
 		
 		return employee;

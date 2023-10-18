@@ -40,7 +40,8 @@ public class Office {
 
 	public Office() {}
 
-	public Office(String officeName) {
+	public Office(Long id, String officeName) {
+		this.id = id;
 		this.officeName = officeName;
 	}
 

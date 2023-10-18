@@ -8,7 +8,7 @@ import com.astro.erpAcs.entities.Office;
 public class Factory {
 
 	public static Employee createEmployee() {
-		return new Employee(1L, "Carlos", "Silva", new Office("Analista de Sistemas"));
+		return new Employee(1L, "Carlos", "Silva", new Office(1L, "Analista de Sistemas"));
 	}
 	
 	public static EmployeeMinDTO createEmployeeDTO() {
@@ -16,7 +16,7 @@ public class Factory {
 	}
 	
 	public static Office createOffice() {
-		return new Office("Analista de Sistemas");
+		return new Office(1L, "Analista de Sistemas");
 	}
 	
 	public static OfficeDTO createOfficeDTO() {

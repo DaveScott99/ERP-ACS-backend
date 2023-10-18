@@ -1,6 +1,7 @@
 package com.astro.erpAcs.services;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,10 +11,8 @@ import com.astro.erpAcs.dto.OfficeDTO;
 import com.astro.erpAcs.dto.mapper.OfficeMapper;
 import com.astro.erpAcs.entities.Office;
 import com.astro.erpAcs.repositories.OfficeRepository;
-import com.astro.erpAcs.util.MessageResponse;
-import com.astro.erpAcs.util.StatusMessage;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.astro.erpAcs.services.exceptions.DatabaseException;
+import com.astro.erpAcs.services.exceptions.EntityNotFoundException;
 
 @Service
 public class OfficeService {
@@ -55,17 +54,15 @@ public class OfficeService {
 				 .orElseThrow(() -> new EntityNotFoundException("Cargo não encontrado " + officeId));
 	}
 	
-	public MessageResponse delete(Long officeId) {
+	public void delete(Long officeId) {
 		try {
-			return officeRepository.findById(officeId)
-				  .map(post -> {
-					  	officeRepository.deleteById(officeId);
-					  	return new MessageResponse("Cargo excluido com sucesso", StatusMessage.SUCCESSFUL);					  	
-					  })
-				  .orElseThrow(() -> new EntityNotFoundException("Cargo não encontrado"));
+			officeRepository.deleteById(officeId);		
+		}
+		catch (EmptyResultDataAccessException e) {
+			throw new EntityNotFoundException("Cargo não encontrado ID: " + officeId);
 		}
 		catch (DataIntegrityViolationException e) {
-			throw new RuntimeException("Violação de integridade");
+			throw new DatabaseException("Violação de integridade");
 		}
 	}
 }
